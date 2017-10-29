@@ -1,8 +1,8 @@
-let heroProx = 'https://g-blackjackapi.herokuapp.com/api/deck/';
+var heroProx = 'https://g-blackjackapi.herokuapp.com/api/deck/';
 
-let heroDex = 'https://g-blackjackapi.herokuapp.com/api/deck/new/shuffle/?deck_count=6';
+var heroDex = 'https://g-blackjackapi.herokuapp.com/api/deck/new/shuffle/?deck_count=6';
 
-let xhr = $.getJSON(heroDex);
+var xhr = $.getJSON(heroDex);
 
 var deckID;
 var leftCounter = 0;
@@ -13,12 +13,10 @@ $('document').ready(function () {
   xhr.done(function (data) {
     deckID = data.deck_id;
     console.log(data);
+  });
 
-
-
-  })
   var hitLeft = function(event) {
-    var drawOne = heroProx+deckID+'/draw/?count=1';
+    var drawOne = heroProx+myID+'/draw/?count=1';
     var drawXHR = $.getJSON(drawOne);
     drawXHR.done(function (drawOneData) {
       var leftVal = drawOneData.cards[0].value;
@@ -37,11 +35,12 @@ $('document').ready(function () {
       console.log("L >>", leftCounter);
       $('.left .counter-head').text(leftCounter);
 
-      $('.leftImg').attr("src", drawOneData.cards["0"].image)
+      $('.leftImg').attr("src", drawOneData.cards["0"].image);
+      check();
     });
   };
   var hitRight = function(event) {
-    var drawOne = heroProx+deckID+'/draw/?count=1';
+    var drawOne = heroProx+myID+'/draw/?count=1';
     var drawXHR = $.getJSON(drawOne);
     drawXHR.done(function (drawOneData) {
       var rightVal = drawOneData.cards[0].value;
@@ -60,12 +59,15 @@ $('document').ready(function () {
       console.log("R >>", rightCounter);
       $('.right .counter-head').text(rightCounter);
 
-      $('.rightImg').attr("src", drawOneData.cards["0"].image)
+      $('.rightImg').attr("src", drawOneData.cards["0"].image);
+      check();
     });
+
   };
 
+
   var shuffle = function (event) {
-    var shuffleID = heroProx+deckID+'/shuffle/';
+    var shuffleID = heroProx+myID+'/shuffle/';
     var shuffleXHR = $.getJSON(shuffleID)
     shuffleXHR.done (function (shuffleData) {
       console.log(shuffleData);
@@ -83,14 +85,25 @@ $('document').ready(function () {
     $('.right .counter-head').text(rightCounter);
   }
 
-  var compare = function (event) {
-    
+  var check = function () {
+    if (leftCounter > 21) {
+      $('.leftImg').attr("src", "img/bust.png");
+      $('.left .counter-head').text('BUST');
+    }
+    if (rightCounter > 21) {
+      $('.rightImg').attr("src", "img/bust.png");
+      $('.right .counter-head').text('BUST');
+    }
+
   }
 
   $('#leftDraw').click(hitLeft);
   $('#rightDraw').click(hitRight);
   $('#shuffle').click(shuffle);
   $('#clear').click(clear);
+
+  // shuffle();
+  // setTimeout(shuffle(), 3000);
 
 
 
@@ -106,4 +119,4 @@ $('document').ready(function () {
 
 
 // var deckAPI = 'https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6';
-// var myID = 'i17qib8s5tgt'
+var myID = 'i17qib8s5tgt'
