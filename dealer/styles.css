@@ -3,11 +3,11 @@ body {
 }
 
 .container {
-  height: 100vh;
+  height: 70vh;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 
 }
 
@@ -19,21 +19,32 @@ body {
   /*align-items: center;*/
 }
 
-.buttonHolder, .counter-head, .player-number {
+.buttonHolder, .player-container, .dealer-container {
   text-align: center;
   display: block;
   color: white;
 }
 
+.button-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 50vw;
+  border: 2px solid black;
+}
+
 .buttonHolder {
   display: flex;
   flex-direction: column;
+  /*justify-content: center;*/
+  align-items: center;
+  width: 100vw;
 }
 
-.card-back-container img {
+.player-card-container img {
   /*max-width: 40vw;*/
   max-height: 50vh;
-  margin: 5vw;
+  /*margin: 5vw;*/
 }
 
 .card-container img {
@@ -42,6 +53,16 @@ body {
 
 .card-img {
   height: 30vh;
+  margin: .5vw;
+}
+
+.bust-img {
+  display: inline;
+  width: 50vw;
+}
+
+.default-img {
+  height: 40vh;
 }
 
 button {

@@ -35,3 +35,21 @@ var getValue = function (data) {
 
 
 }
+
+var winningIndex = scoreArr.reduce((iMax, x, i, scoreArr) => x > scoreArr[iMax] ? i : iMax, 0);
+console.log(winningIndex);
+
+var max = scoreArr[0];
+var maxIndex = 0;
+var maxCt = 0;
+for (var i = 1; i < scoreArr.length; i++) {
+  if (arr[i] > max) {
+      maxIndex = i;
+      max = arr[i];
+  }
+
+  var winningIndex = scoreArr.indexOf(Math.max(...scoreArr));
+  if (winningIndex === 0) {console.log("It's a tie!")}
+  else {
+    console.log(`Player ${winningIndex+1} wins!`);
+  }

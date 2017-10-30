@@ -1,8 +1,12 @@
 var heroProx = 'https://g-blackjackapi.herokuapp.com/api/deck/';
 
 var heroDex = 'https://g-blackjackapi.herokuapp.com/api/deck/new/shuffle/?deck_count=6';
+var myID = 'i17qib8s5tgt';
 
-var xhr = $.getJSON(heroDex);
+
+// var xhr = $.getJSON(heroDex);
+var xhr = $.getJSON(heroProx+myID+'/shuffle/');
+
 
 var deckID;
 var leftCounter = 0;
@@ -19,8 +23,8 @@ $('document').ready(function () {
     var drawOne = heroProx+myID+'/draw/?count=1';
     var drawXHR = $.getJSON(drawOne);
     drawXHR.done(function (drawOneData) {
-      var leftVal = drawOneData.cards[0].value;
 
+      var leftVal = drawOneData.cards[0].value;
       if (leftVal === 'KING' || leftVal === 'QUEEN' || leftVal === 'JACK') {
         leftCounter += 10;
       } else if (leftVal === 'ACE') {
@@ -39,6 +43,7 @@ $('document').ready(function () {
       check();
     });
   };
+
   var hitRight = function(event) {
     var drawOne = heroProx+myID+'/draw/?count=1';
     var drawXHR = $.getJSON(drawOne);
@@ -119,4 +124,3 @@ $('document').ready(function () {
 
 
 // var deckAPI = 'https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6';
-var myID = 'i17qib8s5tgt'
