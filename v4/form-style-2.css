@@ -1,0 +1,70 @@
+.container {
+  height: 90vh;
+  width: 100vw;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Cinzel';
+}
+
+.display-name {
+  height: 40vh;
+  border: 2px solid blue;
+  text-align: center;
+}
+
+.display-name {
+  /*margin-top: 20vh;*/
+  line-height: 4em;
+  font-size: 30px;
+
+}
+/*
+.display-name label {
+  font-size: 30px;
+}*/
+
+.avatar {
+  height: 20vh;
+  border: 2px solid green;
+  display: flex;
+}
+
+.selectors {
+  display: flex;
+  margin: 10vh;
+  /*border: 2px solid red;*/
+  flex: 1;
+  align-content: stretch;
+  justify-content: center;
+}
+
+.reset-local {
+  height: 10vh;
+  border: 2px solid orange;
+}
+
+.submit-container {
+  text-align: center;
+  margin-top: 7.5vh;
+}
+
+label {
+  margin: 0vw 10vw 3vh 10vw;
+}
+
+input {
+  margin: 10vw;
+}
+
+label > input{ /* HIDE RADIO */
+  visibility: hidden; /* Makes input not-clickable */
+  position: absolute; /* Remove input from document flow */
+}
+label > input + img{ /* IMAGE STYLES */
+  cursor:pointer;
+  border:2px solid transparent;
+}
+label > input:checked + img{ /* (RADIO CHECKED) IMAGE STYLES */
+  border:2px solid #f00;
+}
