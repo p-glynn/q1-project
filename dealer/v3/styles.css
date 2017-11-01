@@ -2,49 +2,61 @@ body {
   background-color: #3f772f;
 }
 
+
 .container {
-  height: 70vh;
+  height: 80vh;
   align-items: center;
-  justify-content: space-around;
+  /*justify-content: space-around;*/
   display: flex;
   flex-direction: row;
-
+  cursor: url('img/spade.png'), auto;
 }
 
-.card-back-container {
-  display: flex;
-  flex-direction: row;
-  display: block;
-  /*justify-content: center;*/
-  /*align-items: center;*/
-}
 
-.buttonHolder, .player-container, .dealer-container {
+.player-container, .dealer-container {
   text-align: center;
   display: block;
-  color: white;
+  color: black;
+  flex: 4;
+  flex-wrap: wrap;
+  font-family: 'Cinzel';
+}
+
+.default {
+  flex: 1;
+  margin-left: 2vw;
+  margin-right: 2vw;
+  padding-left: 1vw;
 }
 
 .button-block {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 50vw;
-  border: 2px solid black;
+  width: 100vw;
+  align-items: center;
+  /*border: 2px solid black;*/
+  /*font-family: monospace*/
+
 }
 
 .buttonHolder {
   display: flex;
   flex-direction: column;
-  /*justify-content: center;*/
+  justify-content: center;
   align-items: center;
   width: 100vw;
+  text-align: center;
+  color: black;
+  /*font-family: monospace;*/
+}
+
+.player-button {
+  width: 50vw;
 }
 
 .player-card-container img {
-  /*max-width: 40vw;*/
   max-height: 50vh;
-  /*margin: 5vw;*/
 }
 
 .card-container img {
@@ -57,8 +69,12 @@ body {
 }
 
 .bust-img {
-  display: inline;
-  height: 50vh;
+  height: 40vh;
+  z-index: 1;
+  /*height: 50vh;*/
+  /*position: fixed;*/
+  /*top: 150px;
+  left: 50px;*/
 }
 
 .default-img {
@@ -69,7 +85,12 @@ button {
   border: 1px solid #a07623;
   height: 5vh;
   background-color: black;
-  font-family: monospace;
+  font-family: 'Cinzel';
   color: #a07623;
   margin: 1vh;
+  cursor: pointer;
+}
+
+#check-score {
+  width: 20vw;
 }

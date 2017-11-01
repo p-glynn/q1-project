@@ -3,14 +3,15 @@
   <head>
     <meta charset="utf-8">
     <title>play the dealer V2</title>
+    <link href="https://fonts.googleapis.com/css?family=Cinzel" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <div class="container">
 
       <div class="player-container">
-        <h1>Player</h1>
-        <h1 class="player-counter">0</h3>
+        <h1 id="player-name">Player</h1>
+        <h1 class="player-counter">0</h1>
         <div class="player-card-container">
 
         </div>
@@ -33,10 +34,12 @@
 
     </div>
     <div class="buttonHolder">
-      <div class="button-block"><button type="button" name="button" id="hit" hidden>HIT</button>
-      <button type="button" name="button" id="stay" hidden>STAY</button>
-      <button type="button" name="button" id="deal">DEAL</button>
-      <h2 id="dealer-playing" hidden>--DEALER IS PLAYING--</h2>
+      <div class="button-block">
+        <button type="button" name="button" class ="player-button" id="hit" hidden>HIT</button>
+        <button type="button" name="button" class ="player-button" id="stay" hidden>STAY</button>
+        <button type="button" name="button" class ="player-button" id="deal">DEAL</button>
+        <h2 id="dealer-playing" hidden>--DEALER IS PLAYING--</h2>
+        <button type="button" name="button" id="check-score">CHECK SCORES</button>
       </div>
 
 
