@@ -2,9 +2,12 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>play the dealer V4</title>
+    <title>Online Blackjack</title>
     <link href="https://fonts.googleapis.com/css?family=Cinzel" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Monoton" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css?family=Bungee+Inline" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <!-- <script src="sweetalert/docs/assets/sweetalert/sweetalert.min.js"></script> -->
   </head>
   <body>
     <div class="container">
@@ -13,6 +16,7 @@
         <div class="player-info">
           <h1 id="player-name">Player</h1>
           <h1 class="player-counter">0</h1>
+          <h2 class="chip-count">Chips<h2>
         </div>
 
         <div class="player-card-container">
@@ -22,11 +26,23 @@
       </div>
 
       <div class="default">
-        <img class="default-img" src="img/back1.jpg" alt="card back" id="card-back">
+        <div class="def-img">
+          <img class="default-img" src="img/back1.jpg" alt="card back" id="card-back">
+
+        </div>
+        <div class="bet-header">
+          <h1 class="bet-tracker" hidden>Bet:</h1>
+          <h2 class="bet-tracker" id="bet-val" hidden>O</h2>
+        </div>
+        <div class="chip-container">
+
+        </div>
+
 
       </div>
 
       <div class="dealer-container">
+        <img src="img/avatars/dealer3.png" id="dealer-img" class="avatar">
         <h1>Dealer</h1>
         <h1 class="dealer-counter">0</h1>
         <div class="dealer-card-container">
@@ -39,11 +55,15 @@
 
     </div>
     <div class="buttonHolder">
-      <div class="button-block">
+      <div class="left-block">
+        <p id="dealer-playing" hidden>--DEALER IS PLAYING--</p>
+        <button type="button" name="button" class ="player-button" id="deal">DEAL</button>
+        <button type="button" name="button" class="player-button" id="bet-more" hidden>INCREASE BET</button>
+        <button type="button" name="button" class="player-button" id="bet-less" hidden>DECREASE BET</button>
+        <button type="button" name="button" class="player-button" id="confirm-bet" hidden>CONFIRM BET</button>
         <button type="button" name="button" class ="player-button" id="hit" hidden>HIT</button>
         <button type="button" name="button" class ="player-button" id="stay" hidden>STAY</button>
-        <button type="button" name="button" class ="player-button" id="deal">DEAL</button>
-        <h2 id="dealer-playing" hidden>--DEALER IS PLAYING--</h2>
+
         <button type="button" name="button" id="check-score">CHECK SCORES</button>
       </div>
 
@@ -57,6 +77,18 @@
   src="https://code.jquery.com/jquery-3.2.1.min.js"
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
   crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.4/sweetalert2.all.min.js"></script>
   <script type="text/javascript" src="scriptV3.js"></script>
+  <audio src="audio/hit-1.m4a" id="hit-1"></audio>
+  <audio src="audio/hit-2.m4a" id="hit-2"></audio>
+  <audio src="audio/hit-3.m4a" id="hit-3"></audio>
+  <audio src="audio/hit-4.m4a" id="hit-4"></audio>
+  <audio src="audio/hit-5.m4a" id="hit-5"></audio>
+  <audio src="audio/stay-1.m4a" id="stay-1"></audio>
+  <audio src="audio/stay-2.m4a" id="stay-2"></audio>
+  <audio src="audio/stay-3.m4a" id="stay-3"></audio>
+  <audio src="audio/stay-4.m4a" id="stay-4"></audio>
+  <audio src="audio/stay-5.m4a" id="stay-5"></audio>
+
   </body>
 </html>

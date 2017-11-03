@@ -4,7 +4,7 @@ body {
 
 
 .container {
-  height: 80vh;
+  height: 70vh;
   align-items: center;
   /*justify-content: space-around;*/
   display: flex;
@@ -12,6 +12,13 @@ body {
   cursor: url('img/spade.png'), auto;
 }
 
+.avatar {
+  height: 240px;
+}
+
+#dealer-img {
+  height: 280px;
+}
 
 .player-container, .dealer-container {
   text-align: center;
@@ -19,30 +26,56 @@ body {
   color: black;
   flex: 4;
   flex-wrap: wrap;
-  font-family: 'Cinzel';
+  font-family: 'Bungee Inline';
+  font-weight: 100;
+  font-size: 24px;
+}
+
+.player-container {
+  line-height: 1.2em;
+}
+
+.dealer-container {
+  line-height: 1.4em;
 }
 
 .default {
+  display: flex;
+  flex-direction: column;
   flex: 1;
   margin-left: 2vw;
   margin-right: 2vw;
   padding-left: 1vw;
 }
 
-.button-block {
+.chip-container {
+  /*border: 3px solid white;*/
+  height: 20vh;
+}
+
+.chip-img {
+  height: 6vh;
+}
+
+.bet-tracker {
+  font-size: 50px;
+}
+
+.left-block {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 100vw;
+  width: 50vw;
   align-items: center;
-  /*border: 2px solid black;*/
-  /*font-family: monospace*/
-
+  font-size: 48px;
+  font-family: 'Bungee Inline'
+  /*font-size: 300px;*/
 }
+
 
 .buttonHolder {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   width: 100vw;
@@ -52,7 +85,7 @@ body {
 }
 
 .player-button {
-  width: 50vw;
+  width: 30vw;
 }
 
 .player-card-container img {
@@ -89,9 +122,10 @@ body {
 
 button {
   border: 1px solid #a07623;
-  height: 5vh;
+  height: 7vh;
   background-color: black;
-  font-family: 'Cinzel';
+  font-family: 'Bungee Inline';
+  font-size: 24px;
   color: #a07623;
   margin: 1vh;
   cursor: pointer;
@@ -99,4 +133,9 @@ button {
 
 #check-score {
   width: 20vw;
+}
+
+.bet-tracker {
+  text-align: center;
+  font-family: 'Bungee Inline';
 }

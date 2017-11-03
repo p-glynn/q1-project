@@ -5,21 +5,27 @@ function getUrlVars() {
     });
   return vars;
 }
+var ct = 1;
+var userName = getUrlVars()['name'] || 'Player';
+var avatarID = getUrlVars()['avatar'] || 3;
+var reset = getUrlVars()['reset'];
 
-var displayName = getUrlVars()['name'];
-var avatar = getUrlVars()['avatar'];
+console.log(reset);
 
 
 
-console.log(name);
-console.log(avatar);
+var replacePlus = function (str) {
+  return str.replace(/\+/g, ' ');
+}
+
+userName = replacePlus(userName);
+
+
 
 var heroProx = 'https://g-blackjackapi.herokuapp.com/api/deck/';
 var heroDex = 'https://g-blackjackapi.herokuapp.com/api/deck/new/shuffle/?deck_count=6';
 var myID = 'i17qib8s5tgt';
 
-
-// Daenerys Stormborn of the House Targaryen, First of Her Name, the Unburnt, Queen of the Andals and the First Men, Khaleesi of the Great Grass Sea, Breaker of Chains, and Mother of Dragons
 
 
 // var xhr = $.getJSON(heroDex);
@@ -27,80 +33,46 @@ var xhr = $.getJSON(heroProx+myID+'/shuffle/');
 
 
 var deckID, card, cardValue, hiddenID, dealerDisplay, playerCt, dealerCt;
+var potAmt = 0;
+var betAmt = 0;
 
 // let userName = JSON.parse(localStorage.getItem('userName')) || {name: }
 let dealerWins = JSON.parse(localStorage.getItem('dealerWins')) || { wins: 0 };
 let userWins = JSON.parse(localStorage.getItem('userWins')) || { wins: 0 };
 
+let playerChips = JSON.parse(localStorage.getItem('playerChips')) || { chips: 1000};
+
+
+
+let chipCt = parseInt(JSON.stringify(playerChips));
+console.log("chips >>>", chipCt);
+
 var playerArr = [];
 var dealerArr = [];
-
-// have to get rid of alerts --> forms
-
-// var userName = prompt('Enter your username:', 'Player');
-// var resetLocal = prompt('Type "reset" to reset user wins/losses (if you are a new user)') CHANGE THIS TO A BUTTON SO ITS NOT SO SHITTY
-
-// function capitalize (str) {
-//   var nameArr = [];
-//   for (let i of str) { nameArr.push(i) }
-//   nameArr[0] = nameArr[0].toUpperCase();
-//   return nameArr.join('');
-// }
-//
-//
-
-
 
 
 $('document').ready(function () {
 
-  function checkReset (str) {
-    if (str.toLowerCase() === 'reset') {
-      localStorage.removeItem('dealerWins');
-      localStorage.removeItem('userWins');
-    }
+
+
+  $('#player-name').text(userName);
+  $('.player-info').prepend($('<img>',{src:'img/avatars/'+avatarID+'.png', class:'avatar'}))
+
+  var updateText = function () {
+    $('.chip-count').text(`Chips: ${chipCt}`);
+    $('#bet-val').text(betAmt);
   }
 
-  $('#player-name').text(displayName);
-  // checkReset(resetLocal);
+  function checkReset (reset) {
+    if (reset === 'yes') {
+      localStorage.setItem('playerChips', JSON.stringify(1000));
+      localStorage.setItem('dealerWins', JSON.stringify(0));
+      localStorage.setItem('userWins', JSON.stringify(0));
+    }
+  }
+  checkReset(reset);
 
-  xhr.done(function (data) {
-    deckID = data.deck_id;
-    console.log(data);
-  });
-
-  var deal = function () {
-    $('#hit').prop("hidden", false);
-    $('#stay').prop("hidden", false);
-    $('#deal').prop("hidden", true);
-    $('#check-score').prop("hidden", true);
-    $('.default').empty();
-    $('.dealer-card-container').append($('<img>',{src:'img/back1.jpg', class:'card-img', id:'placeholder'}));
-
-    var drawFour = heroProx+myID+'/draw/?count=4';
-    var drawXHR = $.getJSON(drawFour);
-    drawXHR.done(function (drawFourData) {
-
-      $('.dealer-card-container').append($('<img>',{src:'http://deckofcardsapi.com/static/img/'+drawFourData.cards[3].code+'.png', class:'card-img'}));
-      hiddenID = drawFourData.cards[1].code;
-
-      for (let i=0; i<4; i++) {
-        var card = drawFourData.cards[i].value;
-
-        if (i % 2 === 0) {
-          $('.player-card-container').append($('<img>',{id:`img${i}`,src:'http://deckofcardsapi.com/static/img/'+drawFourData.cards[i].code+'.png', class:'card-img'}));
-          playerArr.push(card);
-        } else {
-          dealerArr.push(card);
-        }
-      }
-      playerCt = getValue(playerArr);
-      dealerCt = getValue(dealerArr.slice(1));
-      $('.player-counter').text(playerCt);
-      $('.dealer-counter').text(dealerCt);
-
-    });
-  };
+  updateText();
 
   var aceReplace = function (arr) {
     var out = [];
@@ -114,7 +86,7 @@ $('document').ready(function () {
       }
     for (let i=0; i<aceCt; i++) {out.push('ACE')}
     return out;
-  } //check out re-factoring this function later on
+  }
 
   var getValue = function (arr) {
     arr = aceReplace(arr);
@@ -135,6 +107,84 @@ $('document').ready(function () {
     return arrVal;
   }
 
+  var updatePlayerCount = function () {
+    playerCt = getValue(playerArr);
+    $('.player-counter').text(`Count: ${playerCt}`);
+  }
+
+  var updateDealerCount = function () {
+    dealerCt = getValue(dealerArr);
+    $('.dealer-counter').text(`Count: ${dealerCt}`);
+  }
+
+  updateText();
+
+  function checkReset (str) {
+    if (str.toLowerCase() === 'reset') {
+      localStorage.removeItem('dealerWins');
+      localStorage.removeItem('userWins');
+    }
+  }
+
+
+  // checkReset(resetLocal);
+
+
+  xhr.done(function (data) {
+
+    deckID = data.deck_id;
+    console.log(data);
+  });
+
+  var deal = function () {
+
+    betAmt += 10;
+    chipCt -= 10;
+    $('.chip-container').append($('<img>', {src:'img/chip.png', class:'chip-img', id:`10`}))
+    updateText();
+
+    $('#bet-more').prop("hidden", false);
+    $('#bet-less').prop("hidden", false);
+    $('#confirm-bet').prop("hidden", false);
+    $('#deal').prop("hidden", true);
+    $('.pot-tracker').prop("hidden", false);
+    $('.bet-tracker').prop("hidden", false);
+    $('#check-score').prop("hidden", true);
+    // $('#right-block').css('display', 'block')
+    $('.def-img').empty();
+    $('.dealer-card-container').append($('<img>',{src:'img/back1.jpg', class:'card-img', id:'placeholder'}));
+
+    var drawFour = heroProx+myID+'/draw/?count=4';
+    var drawXHR = $.getJSON(drawFour);
+    drawXHR.done(function (drawFourData) {
+
+      $('.dealer-card-container').append($('<img>',{src:'http://deckofcardsapi.com/static/img/'+drawFourData.cards[3].code+'.png', class:'card-img'}));
+      hiddenID = drawFourData.cards[1].code;
+
+      for (let i=0; i<4; i++) {
+        var card = drawFourData.cards[i].value;
+
+        if (i % 2 === 0) {
+          $('.player-card-container').append($('<img>',{id:`img${i}`,src:'http://deckofcardsapi.com/static/img/'+drawFourData.cards[i].code+'.png', class:'card-img'}));
+          playerArr.push(card);
+        } else {
+          dealerArr.push(card);
+        }
+      }
+      // playerCt = getValue(playerArr);
+      // $('.player-counter').text(playerCt);
+      updatePlayerCount();
+      dealerCt = getValue(dealerArr.slice(1));
+      $('.dealer-counter').text(`Count: ${dealerCt}`);
+
+    });
+    updateText();
+  };
+
+
+
+
+
   // var draw = function () {
   //   var drawOne = heroProx+myID+'/draw/?count=1';
   //   var drawXHR = $.getJSON(drawOne);
@@ -143,18 +193,36 @@ $('document').ready(function () {
   //   })
   //   return card;
   // }
+  function getRand () {
+    return Math.floor(Math.random() * 5 + 1);
+  }
+
+  function hitAud() {
+    var rI = getRand();
+    var hit = $(`#hit-${rI}`);
+    hit[0].play();
+  }
+
+  function stayAud() {
+    var rI = getRand();
+    var stay = $(`#stay-${rI}`);
+    stay[0].play();
+  }
+
 
   var hit = function(event) {
+    hitAud();
     var drawOne = heroProx+myID+'/draw/?count=1';
     var drawXHR = $.getJSON(drawOne);
     drawXHR.done(function (drawOneData) {
       card = drawOneData.cards[0].value;
       playerArr.push(card);
-      playerCt = getValue(playerArr);
-
-      $('.player-counter').text(playerCt);
+      // playerCt = getValue(playerArr);
+      //
+      // $('.player-counter').text(playerCt);
+      updatePlayerCount();
       $('.player-card-container').append($('<img>',{src:'http://deckofcardsapi.com/static/img/'+drawOneData.cards[0].code+'.png', class:'card-img'}))
-      setTimeout(checkPlayer(), 1000);
+      setTimeout(checkPlayer(), 2000);
     });
   };
 
@@ -165,9 +233,10 @@ $('document').ready(function () {
     drawXHR.done(function (drawOneData) {
       card = drawOneData.cards[0].value;
       dealerArr.push(card);
-      $('.dealer-counter').text(getValue(dealerArr));
+      // $('.dealer-counter').text(getValue(dealerArr));
+      updateDealerCount();
       $('.dealer-card-container').append($('<img>',{src:'http://deckofcardsapi.com/static/img/'+drawOneData.cards[0].code+'.png', class:'card-img'}))
-      setTimeout(checkDealer(), 1000);
+      setTimeout(checkDealer(), 2000);
     });
   };
 
@@ -188,14 +257,12 @@ $('document').ready(function () {
       } else {
         end();
       }
-    }, 850);
+    }, 1250);
   }
 
   var checkPlayer = function () {
     setTimeout(function () {
       if (playerCt > 21) {
-        // $('.player-card-container').empty();
-        // $('.player-card-container').append($("<img src='img/bust.png' class='bust-img'/>"));
         // $('#player-bust').css('display', 'block');
         $('.player-counter').append(' - BUST');
         end();
@@ -205,46 +272,60 @@ $('document').ready(function () {
   }
 
   var end = function () {
-    if (playerCt > 21) {
-      alert("Player busts!\nDealer wins.");
-      dealerWins.wins ++;
-      localStorage.setItem('dealerWins', JSON.stringify(dealerWins));
-    } else if (dealerCt > 21) {
-      alert("Dealer busts.\nPlayer wins!");
-      userWins.wins ++;
-      localStorage.setItem('userWins', JSON.stringify(userWins))
-    } else if (playerCt > dealerCt) {
-      alert(`Player (${playerCt}) beats dealer (${dealerCt})!`);
-      userWins.wins ++;
-      localStorage.setItem('userWins', JSON.stringify(userWins))
-    } else if (playerCt === dealerCt) {
-      alert(`It's a tie! (${dealerCt})`);
-    } else {
-      alert(`Dealer (${dealerCt}) beats player (${playerCt}).`);
-      dealerWins.wins ++;
-      localStorage.setItem('dealerWins', JSON.stringify(dealerWins));
-    }
-    console.log("user wins >>", userWins);
-    console.log("dealer wins >>", dealerWins);
-    setTimeout (function () {
-    $('.player-card-container').empty();
-    $('.dealer-card-container').empty();
-    $('.default').append($("<img src='img/back1.jpg' class='default-img'/>"));
-    dealerArr = [];
-    dealerCt = getValue(dealerArr);
-    $('.dealer-counter').text(dealerCt);
-    playerArr = [];
-    playerCt = getValue(playerArr);
-    $('.player-counter').text(playerCt);
-    $('#dealer-playing').prop("hidden", true);
     $('#stay').prop('hidden', true);
     $('#hit').prop('hidden', true);
-    $('#deal').prop("hidden", false);
-    $('#check-score').prop("hidden", false);
+    if (playerCt > 21) {
+      swal(`${userName} busted!`, "Dealer wins.", 'error');
+      updateText();
+      dealerWins.wins ++;
+      localStorage.setItem('playerChips', JSON.stringify(chipCt));
+      localStorage.setItem('dealerWins', JSON.stringify(dealerWins));
+    } else if (dealerCt > 21) {
+      swal(`${userName} wins!`, "Dealer busted.", "success");
+      chipCt += betAmt*2;
+      updateText();
+      localStorage.setItem('playerChips', JSON.stringify(chipCt));
+      userWins.wins ++;
+      localStorage.setItem('userWins', JSON.stringify(userWins))
+
+    } else if (playerCt === dealerCt) {
+      chipCt += betAmt;
+      swal({
+        text: `It's a tie! (${dealerCt})`,
+        type: 'warning',
+      });
+    } else {
+      updateText();
+      swal({
+        text:`Dealer (${dealerCt}) beats ${userName} (${playerCt}).`,
+        type:'error',
+      });
+      dealerWins.wins ++;
+      localStorage.setItem('playerChips', JSON.stringify(chipCt));
+      localStorage.setItem('dealerWins', JSON.stringify(dealerWins));
+    }
+
+    setTimeout (function () {
+      betAmt = 0;
+      ct = 1;
+      $('.player-card-container').empty();
+      $('.dealer-card-container').empty();
+      $('.def-img').append($("<img src='img/back1.jpg' class='default-img'/>"));
+      dealerArr = [];
+      updateDealerCount();
+      playerArr = [];
+      updatePlayerCount();
+      $('#dealer-playing').prop("hidden", true);
+      $('.chip-container').empty()
+      $('#deal').prop("hidden", false);
+      $('#check-score').prop("hidden", false);
+      $('.bet-tracker').prop("hidden", true);
+      updateText();
   }, 1500);
   }
 
   var stay = function () {
+    stayAud();
     $('#placeholder').remove();
     $('#hit').prop("hidden", true);
     $('#stay').prop("hidden", true);
@@ -256,14 +337,53 @@ $('document').ready(function () {
 
 
   var checkScore = function (event) {
-    alert(`${userName}: ${userWins.wins} wins.\nDealer: ${dealerWins.wins} wins.`)
+    swal(`${userName}: ${userWins.wins} wins.<br>Dealer: ${dealerWins.wins} wins.`)
   }
+
+
+
+  var betMore = function (event) {
+    if (betAmt < 91) {
+      ct ++;
+      console.log(ct);
+      chipCt -= 10;
+      betAmt += 10;
+      $('.chip-container').append($('<img>', {src:'img/chip.png', class:'chip-img', id:`${ct}`}));
+    }
+
+    updateText();
+  }
+
+  var betLess = function (event) {
+    if (betAmt > 10) {
+      $(`#${ct}`).remove();
+      ct--;
+      chipCt += 10;
+      betAmt -= 10;
+
+    }
+
+    updateText();
+  }
+
+  var confirmBet = function (event) {
+    $('#bet-more').prop("hidden", true);
+    $('#bet-less').prop("hidden", true);
+    $('#confirm-bet').prop("hidden", true);
+    $('#hit').prop("hidden", false);
+    $('#stay').prop("hidden", false);
+  }
+
 
 
   $('#hit').click(hit);
   $('#stay').click(stay);
   $('#deal').click(deal);
   $('#check-score').click(checkScore);
+  $('#bet-more').click(betMore);
+  $('#bet-less').click(betLess);
+  $('#confirm-bet').click(confirmBet);
+
 
 
 
