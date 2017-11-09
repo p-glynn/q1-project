@@ -40,8 +40,8 @@ var betAmt = 0;
 let dealerWins = JSON.parse(localStorage.getItem('dealerWins')) || { wins: 0 };
 let userWins = JSON.parse(localStorage.getItem('userWins')) || { wins: 0 };
 
-let playerChips = JSON.parse(localStorage.getItem('playerChips')) || { chips: 1000};
-
+let playerChips = JSON.parse(localStorage.getItem('playerChips')) || {chips: 1000};
+console.log(playerChips);
 
 
 
@@ -51,7 +51,13 @@ var dealerArr = [];
 
 
 $('document').ready(function () {
-  let chipCt = parseInt(JSON.stringify(playerChips.chips));
+  chipCt = parseInt(JSON.stringify(playerChips));
+
+  if (!chipCt) {
+    chipCt = parseInt(JSON.stringify(playerChips.chips));
+  }
+
+  console.log(chipCt);
 
 
   $('#player-name').text(userName);
@@ -70,6 +76,13 @@ $('document').ready(function () {
     }
   }
   checkReset(reset);
+
+  var initialize = function () {
+    betAmt += 10;
+    chipCt -= 10;
+    $('.chip-container').append($('<img>', {src:'img/chip.png', class:'chip-img', id:`10`}))
+    updateText();
+  }
 
   var aceReplace = function (arr) {
     var out = [];
@@ -115,6 +128,7 @@ $('document').ready(function () {
   }
 
   updateText();
+  initialize();
 
 
   xhr.done(function (data) {
@@ -122,20 +136,19 @@ $('document').ready(function () {
   });
 
   var deal = function () {
-
-    betAmt += 10;
-    chipCt -= 10;
     $('.chip-container').append($('<img>', {src:'img/chip.png', class:'chip-img', id:`10`}))
     updateText();
 
-    $('#bet-more').prop("hidden", false);
-    $('#bet-less').prop("hidden", false);
-    $('#confirm-bet').prop("hidden", false);
+    $('#bet-more').prop("hidden", true);
+    $('#bet-less').prop("hidden", true);
+    // $('#confirm-bet').prop("hidden", false);
     $('#deal').prop("hidden", true);
-    $('.pot-tracker').prop("hidden", false);
-    $('.bet-tracker').prop("hidden", false);
-    $('#check-score').prop("hidden", true);
-    // $('#right-block').css('display', 'block')
+    // $('.pot-tracker').prop("hidden", false);
+    // $('.bet-tracker').prop("hidden", false);
+    // $('#check-score').prop("hidden", true);
+    // $('#right-block').css('display', 'block');
+    $('#hit').prop("hidden", false);
+    $('#stay').prop("hidden", false);
     $('.def-img').empty();
     $('.dealer-card-container').append($('<img>',{src:'img/back1.jpg', class:'card-img', id:'placeholder'}));
 
@@ -156,8 +169,6 @@ $('document').ready(function () {
           dealerArr.push(card);
         }
       }
-      // playerCt = getValue(playerArr);
-      // $('.player-counter').text(playerCt);
       updatePlayerCount();
       dealerCt = getValue(dealerArr.slice(1));
       $('.dealer-counter').text(`Count: ${dealerCt}`);
@@ -202,9 +213,6 @@ $('document').ready(function () {
     drawXHR.done(function (drawOneData) {
       card = drawOneData.cards[0].value;
       playerArr.push(card);
-      // playerCt = getValue(playerArr);
-      //
-      // $('.player-counter').text(playerCt);
       updatePlayerCount();
       $('.player-card-container').append($('<img>',{src:'http://deckofcardsapi.com/static/img/'+drawOneData.cards[0].code+'.png', class:'card-img'}))
       setTimeout(checkPlayer(), 2000);
@@ -304,7 +312,10 @@ $('document').ready(function () {
       $('.chip-container').empty()
       $('#deal').prop("hidden", false);
       $('#check-score').prop("hidden", false);
-      $('.bet-tracker').prop("hidden", true);
+      // $('.bet-tracker').prop("hidden", true);
+      initialize();
+      $('#bet-more').prop("hidden", false);
+      $('#bet-less').prop("hidden", false);
       updateText();
   }, 1500);
   }
@@ -351,23 +362,24 @@ $('document').ready(function () {
     updateText();
   }
 
-  var confirmBet = function (event) {
-    $('#bet-more').prop("hidden", true);
-    $('#bet-less').prop("hidden", true);
-    $('#confirm-bet').prop("hidden", true);
-    $('#hit').prop("hidden", false);
-    $('#stay').prop("hidden", false);
-  }
+  // var confirmBet = function (event) {
+  //   $('#bet-more').prop("hidden", true);
+  //   $('#bet-less').prop("hidden", true);
+  //   $('#confirm-bet').prop("hidden", true);
+
+  // }
+
+
 
 
 
   $('#hit').click(hit);
   $('#stay').click(stay);
   $('#deal').click(deal);
-  $('#check-score').click(checkScore);
+  $('.player-info').click(checkScore);
   $('#bet-more').click(betMore);
   $('#bet-less').click(betLess);
-  $('#confirm-bet').click(confirmBet);
+  // $('#confirm-bet').click(confirmBet);
 
 
 

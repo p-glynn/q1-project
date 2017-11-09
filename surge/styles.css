@@ -55,6 +55,7 @@ body {
 
 .chip-img {
   height: 6vh;
+  
 }
 
 .bet-tracker {
@@ -72,6 +73,9 @@ body {
   /*font-size: 300px;*/
 }
 
+.player-info {
+  cursor: pointer;
+}
 
 .buttonHolder {
   display: flex;
@@ -117,7 +121,7 @@ body {
 }
 
 .default-img {
-  height: 40vh;
+  max-height: 300px;
 }
 
 button {
@@ -138,4 +142,5 @@ button {
 .bet-tracker {
   text-align: center;
   font-family: 'Bungee Inline';
+  line-height: .2em;
 }
