@@ -44,11 +44,24 @@ let playerChips = JSON.parse(localStorage.getItem('playerChips')) || { chips: 10
 
 
 
-let chipCt = parseInt(JSON.stringify(playerChips));
+let chipCt = parseInt(JSON.stringify(playerChips.chips));
 console.log("chips >>>", chipCt);
 
 var playerArr = [];
 var dealerArr = [];
+
+function checkReset (input) {
+
+  if (input === 'yes') {
+    localStorage.removeItem('playerChips');
+    localStorage.removeItem('dealerWins');
+    localStorage.removeItem('userWins');
+    localStorage.setItem('playerChips', JSON.stringify(1000));
+    localStorage.setItem('dealerWins', JSON.stringify(0));
+    localStorage.setItem('userWins', JSON.stringify(0));
+  }
+}
+checkReset(reset);
 
 
 $('document').ready(function () {
@@ -56,23 +69,23 @@ $('document').ready(function () {
 
 
   $('#player-name').text(userName);
-  $('.player-info').prepend($('<img>',{src:'img/avatars/'+avatarID+'.png', class:'avatar'}))
+  $('.player-info').prepend($('<img>',{src:'img/avatars/'+avatarID+'.png', class:'avatar'}));
 
   var updateText = function () {
     $('.chip-count').text(`Chips: ${chipCt}`);
     $('#bet-val').text(betAmt);
   }
 
-  function checkReset (reset) {
-    if (reset === 'yes') {
-      localStorage.setItem('playerChips', JSON.stringify(1000));
-      localStorage.setItem('dealerWins', JSON.stringify(0));
-      localStorage.setItem('userWins', JSON.stringify(0));
-    }
-  }
-  checkReset(reset);
-
   updateText();
+
+  var initialize = function () {
+    betAmt += 10;
+    chipCt -= 10;
+    $('.chip-container').append($('<img>', {src:'img/chip.png', class:'chip-img', id:`10`}))
+    updateText();
+  }
+
+  initialize();
 
   var aceReplace = function (arr) {
     var out = [];
@@ -136,21 +149,19 @@ $('document').ready(function () {
     console.log(data);
   });
 
+
   var deal = function () {
 
-    betAmt += 10;
-    chipCt -= 10;
-    $('.chip-container').append($('<img>', {src:'img/chip.png', class:'chip-img', id:`10`}))
-    updateText();
 
-    $('#bet-more').prop("hidden", false);
-    $('#bet-less').prop("hidden", false);
-    $('#confirm-bet').prop("hidden", false);
+    // $('#bet-more').prop("hidden", false);
+    // $('#bet-less').prop("hidden", false);
+    // $('#confirm-bet').prop("hidden", false);
     $('#deal').prop("hidden", true);
-    $('.pot-tracker').prop("hidden", false);
-    $('.bet-tracker').prop("hidden", false);
-    $('#check-score').prop("hidden", true);
-    // $('#right-block').css('display', 'block')
+    // $('.bet-tracker').prop("hidden", false);
+    // $('#check-score').prop("hidden", true);
+    // $('#right-block').css('display', 'block');
+    $('#hit').prop("hidden", false);
+    $('#stay').prop("hidden", false);
     $('.def-img').empty();
     $('.dealer-card-container').append($('<img>',{src:'img/back1.jpg', class:'card-img', id:'placeholder'}));
 
@@ -171,8 +182,6 @@ $('document').ready(function () {
           dealerArr.push(card);
         }
       }
-      // playerCt = getValue(playerArr);
-      // $('.player-counter').text(playerCt);
       updatePlayerCount();
       dealerCt = getValue(dealerArr.slice(1));
       $('.dealer-counter').text(`Count: ${dealerCt}`);
@@ -185,14 +194,18 @@ $('document').ready(function () {
 
 
 
-  // var draw = function () {
-  //   var drawOne = heroProx+myID+'/draw/?count=1';
-  //   var drawXHR = $.getJSON(drawOne);
-  //   drawXHR.done(function (drawOneData) {
-  //     card = drawOneData.cards[0].value;
-  //   })
-  //   return card;
-  // }
+  var getCard = function () {
+    var drawOne = heroProx+myID+'/draw/?count=1';
+    var drawXHR = $.getJSON(drawOne);
+    drawXHR.done(function (oneCardData) {
+      card = oneCardData;
+      // console.log(card.cards[0].code);
+      return card;
+    })
+    console.log(drawXHR);
+    // card = oneCardData;
+  }
+
   function getRand () {
     return Math.floor(Math.random() * 5 + 1);
   }
@@ -217,14 +230,25 @@ $('document').ready(function () {
     drawXHR.done(function (drawOneData) {
       card = drawOneData.cards[0].value;
       playerArr.push(card);
-      // playerCt = getValue(playerArr);
-      //
-      // $('.player-counter').text(playerCt);
       updatePlayerCount();
       $('.player-card-container').append($('<img>',{src:'http://deckofcardsapi.com/static/img/'+drawOneData.cards[0].code+'.png', class:'card-img'}))
       setTimeout(checkPlayer(), 2000);
     });
   };
+
+  // if i%2 == 0 --> push to player
+  // else if i%3 == 0 --> hide (dealer)
+  // else --> show (dealer)
+
+  // var hit = function(event) {
+  //   hitAud();
+  //   var card = getCard();
+  //   // console.log(card.cards[0].code);
+  //   playerArr.push(card);
+  //   updatePlayerCount();
+  //   // $('.player-card-container').append($('<img>',{src:'http://deckofcardsapi.com/static/img/'+card.code+'.png', class:'card-img'}))
+  //   setTimeout(checkPlayer(), 2000);
+  // };
 
   var dealerHit = function(event) {
 
@@ -233,7 +257,6 @@ $('document').ready(function () {
     drawXHR.done(function (drawOneData) {
       card = drawOneData.cards[0].value;
       dealerArr.push(card);
-      // $('.dealer-counter').text(getValue(dealerArr));
       updateDealerCount();
       $('.dealer-card-container').append($('<img>',{src:'http://deckofcardsapi.com/static/img/'+drawOneData.cards[0].code+'.png', class:'card-img'}))
       setTimeout(checkDealer(), 2000);
@@ -304,9 +327,8 @@ $('document').ready(function () {
       localStorage.setItem('playerChips', JSON.stringify(chipCt));
       localStorage.setItem('dealerWins', JSON.stringify(dealerWins));
     }
-
+    betAmt = 0;
     setTimeout (function () {
-      betAmt = 0;
       ct = 1;
       $('.player-card-container').empty();
       $('.dealer-card-container').empty();
@@ -319,10 +341,12 @@ $('document').ready(function () {
       $('.chip-container').empty()
       $('#deal').prop("hidden", false);
       $('#check-score').prop("hidden", false);
-      $('.bet-tracker').prop("hidden", true);
+      // $('.bet-tracker').prop("hidden", true);
       updateText();
+      initialize();
   }, 1500);
   }
+
 
   var stay = function () {
     stayAud();
@@ -370,8 +394,7 @@ $('document').ready(function () {
     $('#bet-more').prop("hidden", true);
     $('#bet-less').prop("hidden", true);
     $('#confirm-bet').prop("hidden", true);
-    $('#hit').prop("hidden", false);
-    $('#stay').prop("hidden", false);
+    $('#deal').prop("hidden", false)
   }
 
 
@@ -379,7 +402,7 @@ $('document').ready(function () {
   $('#hit').click(hit);
   $('#stay').click(stay);
   $('#deal').click(deal);
-  $('#check-score').click(checkScore);
+  $('.player-info').click(checkScore);
   $('#bet-more').click(betMore);
   $('#bet-less').click(betLess);
   $('#confirm-bet').click(confirmBet);

@@ -16,12 +16,12 @@
 .splash-header {
   /*border: 1px solid green;*/
   position: relative;
-  left: 4vw;
-  top: 12vh;
+  left: 26vw;
+  top: 19vh;
   font-size: 76px;
   margin-top: 30vh;
   word-spacing: 1.5em;
-  line-height: .6em;
+  line-height: .3em;
   /*text-shadow: 1px 1px black;*/
   color: #ed1717;
   z-index: 2;
@@ -29,13 +29,14 @@
 }
 
 
+
 .display-name input, .display-name label {
   /*margin-top: 40vh;*/
   line-height: 1.2em;
-  font-size: 50px;
+  font-size: 40px;
   text-shadow: 1px 1px white;
   font-family: 'Bungee Inline', sans-serif;
-  margin: 0 5vw 2vh 5vw;
+  margin: 0 5vw 5vh 5vw;
   color: #ed1717;
   text-align: center;
   border: 1px solid #8e8e8e;
@@ -47,7 +48,7 @@
 
 
 .name-input {
-  margin-top: 30vh;
+  margin-top: 27vh;
   height: 10vh;
   background-color: #8e8e8e;
 
@@ -67,7 +68,7 @@
 }
 
 .avatar-header {
-  margin-top: 11vh;
+  margin-top: 9vh;
   /*margin-bottom: 5vh;*/
   text-align: center;
   background-color: #8e8e8e;
@@ -76,7 +77,7 @@
   height: 8vh;
   width: 100vw;
   font-family: 'Bungee Inline';
-  font-size: 50px;
+  font-size: 40px;
 }
 
 .selectors {

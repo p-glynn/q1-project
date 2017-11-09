@@ -10,6 +10,7 @@ body {
   display: flex;
   flex-direction: row;
   cursor: url('img/spade.png'), auto;
+  margin-top: 10vh;
 }
 
 .avatar {
@@ -33,6 +34,7 @@ body {
 
 .player-container {
   line-height: 1.2em;
+  cursor: pointer;
 }
 
 .dealer-container {
@@ -54,7 +56,7 @@ body {
 }
 
 .chip-img {
-  height: 6vh;
+  height: 4.8vh;
 }
 
 .bet-tracker {
@@ -69,7 +71,6 @@ body {
   align-items: center;
   font-size: 48px;
   font-family: 'Bungee Inline'
-  /*font-size: 300px;*/
 }
 
 
@@ -117,7 +118,7 @@ body {
 }
 
 .default-img {
-  height: 40vh;
+  height: 35vh;
 }
 
 button {
@@ -133,9 +134,16 @@ button {
 
 #check-score {
   width: 20vw;
+  margin-top: 10vh;
 }
 
 .bet-tracker {
   text-align: center;
   font-family: 'Bungee Inline';
+  display: inline;
+}
+
+.bet-header {
+  line-height: .6em;
+  margin: 5vh 0 3vh 0;
 }
