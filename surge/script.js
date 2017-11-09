@@ -52,7 +52,6 @@ var dealerArr = [];
 
 $('document').ready(function () {
   let chipCt = parseInt(JSON.stringify(playerChips.chips));
-  console.log("chips >>>", chipCt);
 
 
   $('#player-name').text(userName);
@@ -63,16 +62,14 @@ $('document').ready(function () {
     $('#bet-val').text(betAmt);
   }
 
-  // function checkReset (reset) {
-  //   if (reset === 'yes') {
-  //     localStorage.setItem('playerChips', JSON.stringify(1000));
-  //     localStorage.setItem('dealerWins', JSON.stringify(0));
-  //     localStorage.setItem('userWins', JSON.stringify(0));
-  //   }
-  // }
-  // checkReset(reset);
-
-  updateText();
+  function checkReset (reset) {
+    if (reset === 'yes') {
+      localStorage.setItem('playerChips', JSON.stringify(1000));
+      localStorage.setItem('dealerWins', JSON.stringify(0));
+      localStorage.setItem('userWins', JSON.stringify(0));
+    }
+  }
+  checkReset(reset);
 
   var aceReplace = function (arr) {
     var out = [];
@@ -119,21 +116,9 @@ $('document').ready(function () {
 
   updateText();
 
-  function checkReset (str) {
-    if (str.toLowerCase() === 'reset') {
-      localStorage.removeItem('dealerWins');
-      localStorage.removeItem('userWins');
-    }
-  }
-
-
-  // checkReset(resetLocal);
-
 
   xhr.done(function (data) {
-
     deckID = data.deck_id;
-    console.log(data);
   });
 
   var deal = function () {
