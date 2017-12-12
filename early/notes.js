@@ -53,3 +53,11 @@ for (var i = 1; i < scoreArr.length; i++) {
   else {
     console.log(`Player ${winningIndex+1} wins!`);
   }
+
+
+  function checkReset (str) {
+    if (str.toLowerCase() === 'reset') {
+      localStorage.removeItem('dealerWins');
+      localStorage.removeItem('userWins');
+    }
+  }

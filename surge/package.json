@@ -1,0 +1,19 @@
+{
+  "name": "surge",
+  "version": "1.0.0",
+  "description": "This is a web application of the popular card game Blackjack that I created for my first-quarter project as part of Galvanize's full-stack web-development program.",
+  "main": "script.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1"
+  }
+}

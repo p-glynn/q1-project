@@ -1,0 +1,28 @@
+{
+  "name": "q1-final-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "functions.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/p-glynn/q1-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/p-glynn/q1-project/issues"
+  },
+  "homepage": "https://github.com/p-glynn/q1-project#readme",
+  "dependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1",
+    "sweetalert": "^2.0.8"
+  }
+}

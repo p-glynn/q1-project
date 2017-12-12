@@ -1,20 +1,19 @@
-function getUrlVars() {
+const getUrlVars = () => {
   var vars = {};
   var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,         function(m,key,value) {
       vars[key] = value;
     });
   return vars;
 }
+
 var ct = 1;
 var userName = getUrlVars()['name'] || 'Player';
 var avatarID = getUrlVars()['avatar'] || 3;
 var reset = getUrlVars()['reset'];
 
-console.log(reset);
 
 
-
-var replacePlus = function (str) {
+var replacePlus = (str) => {
   return str.replace(/\+/g, ' ');
 }
 
@@ -41,7 +40,6 @@ let dealerWins = JSON.parse(localStorage.getItem('dealerWins')) || { wins: 0 };
 let userWins = JSON.parse(localStorage.getItem('userWins')) || { wins: 0 };
 
 let playerChips = JSON.parse(localStorage.getItem('playerChips')) || {chips: 1000};
-console.log(playerChips);
 
 
 
@@ -50,25 +48,24 @@ var playerArr = [];
 var dealerArr = [];
 
 
-$('document').ready(function () {
+$('document').ready( () => {
   chipCt = parseInt(JSON.stringify(playerChips));
 
   if (!chipCt) {
     chipCt = parseInt(JSON.stringify(playerChips.chips));
   }
 
-  console.log(chipCt);
 
 
   $('#player-name').text(userName);
   $('.player-info').prepend($('<img>',{src:'img/avatars/'+avatarID+'.png', class:'avatar'}))
 
-  var updateText = function () {
+  var updateText = () => {
     $('.chip-count').text(`Chips: ${chipCt}`);
     $('#bet-val').text(betAmt);
   }
 
-  function checkReset (reset) {
+  const checkReset = (reset) => {
     if (reset === 'yes') {
       localStorage.setItem('playerChips', JSON.stringify(1000));
       localStorage.setItem('dealerWins', JSON.stringify(0));
@@ -77,14 +74,14 @@ $('document').ready(function () {
   }
   checkReset(reset);
 
-  var initialize = function () {
+  var initialize = () => {
     betAmt += 10;
     chipCt -= 10;
     $('.chip-container').append($('<img>', {src:'img/chip.png', class:'chip-img', id:`10`}))
     updateText();
   }
 
-  var aceReplace = function (arr) {
+  var aceReplace = (arr) => {
     var out = [];
     var aceCt = 0;
     for (let card of arr) {
@@ -98,7 +95,7 @@ $('document').ready(function () {
     return out;
   }
 
-  var getValue = function (arr) {
+  const getValue = (arr) => {
     arr = aceReplace(arr);
     var arrVal = 0;
     for (let card of arr) {
@@ -117,12 +114,12 @@ $('document').ready(function () {
     return arrVal;
   }
 
-  var updatePlayerCount = function () {
+  var updatePlayerCount = () => {
     playerCt = getValue(playerArr);
     $('.player-counter').text(`Count: ${playerCt}`);
   }
 
-  var updateDealerCount = function () {
+  var updateDealerCount = () => {
     dealerCt = getValue(dealerArr);
     $('.dealer-counter').text(`Count: ${dealerCt}`);
   }
@@ -131,11 +128,11 @@ $('document').ready(function () {
   initialize();
 
 
-  xhr.done(function (data) {
+  xhr.done( (data) => {
     deckID = data.deck_id;
   });
 
-  var deal = function () {
+  var deal = () => {
     $('.chip-container').append($('<img>', {src:'img/chip.png', class:'chip-img', id:`10`}))
     updateText();
 
@@ -154,7 +151,7 @@ $('document').ready(function () {
 
     var drawFour = heroProx+myID+'/draw/?count=4';
     var drawXHR = $.getJSON(drawFour);
-    drawXHR.done(function (drawFourData) {
+    drawXHR.done( (drawFourData) => {
 
       $('.dealer-card-container').append($('<img>',{src:'http://deckofcardsapi.com/static/img/'+drawFourData.cards[3].code+'.png', class:'card-img'}));
       hiddenID = drawFourData.cards[1].code;
@@ -189,24 +186,24 @@ $('document').ready(function () {
   //   })
   //   return card;
   // }
-  function getRand () {
+  const getRand = () => {
     return Math.floor(Math.random() * 5 + 1);
   }
 
-  function hitAud() {
+  const hitAud = () => {
     var rI = getRand();
     var hit = $(`#hit-${rI}`);
     hit[0].play();
   }
 
-  function stayAud() {
+  const stayAud = () => {
     var rI = getRand();
     var stay = $(`#stay-${rI}`);
     stay[0].play();
   }
 
 
-  var hit = function(event) {
+  var hit = (event) => {
     hitAud();
     var drawOne = heroProx+myID+'/draw/?count=1';
     var drawXHR = $.getJSON(drawOne);
@@ -219,11 +216,11 @@ $('document').ready(function () {
     });
   };
 
-  var dealerHit = function(event) {
+  var dealerHit = (event) => {
 
     var drawOne = heroProx+myID+'/draw/?count=1';
     var drawXHR = $.getJSON(drawOne);
-    drawXHR.done(function (drawOneData) {
+    drawXHR.done( (drawOneData) => {
       card = drawOneData.cards[0].value;
       dealerArr.push(card);
       // $('.dealer-counter').text(getValue(dealerArr));
@@ -237,10 +234,10 @@ $('document').ready(function () {
 
 
 
-  var checkDealer = function () {
+  var checkDealer = () => {
     dealerCt = getValue(dealerArr);
     playerCt = getValue(playerArr);
-    setTimeout(function () {
+    setTimeout( () => {
       if (dealerCt < playerCt) {
       dealerHit();
       } else if (dealerCt > 21) {
@@ -253,8 +250,8 @@ $('document').ready(function () {
     }, 1250);
   }
 
-  var checkPlayer = function () {
-    setTimeout(function () {
+  var checkPlayer = () => {
+    setTimeout(() => {
       if (playerCt > 21) {
         // $('#player-bust').css('display', 'block');
         $('.player-counter').append(' - BUST');
@@ -264,7 +261,7 @@ $('document').ready(function () {
     }, 500);
   }
 
-  var end = function () {
+  var end = () => {
     $('#stay').prop('hidden', true);
     $('#hit').prop('hidden', true);
     if (playerCt > 21) {
@@ -298,7 +295,7 @@ $('document').ready(function () {
       localStorage.setItem('dealerWins', JSON.stringify(dealerWins));
     }
 
-    setTimeout (function () {
+    setTimeout ( () => {
       betAmt = 0;
       ct = 1;
       $('.player-card-container').empty();
@@ -320,7 +317,7 @@ $('document').ready(function () {
   }, 1500);
   }
 
-  var stay = function () {
+  var stay = () => {
     stayAud();
     $('#placeholder').remove();
     $('#hit').prop("hidden", true);
@@ -332,16 +329,15 @@ $('document').ready(function () {
   }
 
 
-  var checkScore = function (event) {
+  var checkScore = (event) => {
     swal(`${userName}: ${userWins.wins} wins.<br>Dealer: ${dealerWins.wins} wins.`)
   }
 
 
 
-  var betMore = function (event) {
+  var betMore = (event) => {
     if (betAmt < 91) {
       ct ++;
-      console.log(ct);
       chipCt -= 10;
       betAmt += 10;
       $('.chip-container').append($('<img>', {src:'img/chip.png', class:'chip-img', id:`${ct}`}));
@@ -350,7 +346,7 @@ $('document').ready(function () {
     updateText();
   }
 
-  var betLess = function (event) {
+  var betLess = (event) => {
     if (betAmt > 10) {
       $(`#${ct}`).remove();
       ct--;
@@ -390,7 +386,12 @@ $('document').ready(function () {
 })
 
 
-
+module.exports = {
+  betMore,
+  betLess,
+  getRand,
+  getValue
+}
 
 
 
