@@ -1,3 +1,7 @@
+var deckID, card, cardValue, hiddenID, dealerDisplay, playerCt, dealerCt;
+var potAmt = 0;
+var betAmt = 0;
+
 const getUrlVars = () => {
   var vars = {};
   var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,         function(m,key,value) {
@@ -23,17 +27,21 @@ userName = replacePlus(userName);
 
 var heroProx = 'https://g-blackjackapi.herokuapp.com/api/deck/';
 var heroDex = 'https://g-blackjackapi.herokuapp.com/api/deck/new/shuffle/?deck_count=6';
-var myID = 'i17qib8s5tgt';
+
+if (!deckID) {
+  var response = $.getJSON(heroDex);
+  response.done(data => {
+    deckID = response.responseJSON.deck_id;
+  })
+}
+
+// var deckID = 'i17qib8s5tgt';
 
 
 
 // var xhr = $.getJSON(heroDex);
-var xhr = $.getJSON(heroProx+myID+'/shuffle/');
+var xhr = $.getJSON(heroProx+deckID+'/shuffle/');
 
-
-var deckID, card, cardValue, hiddenID, dealerDisplay, playerCt, dealerCt;
-var potAmt = 0;
-var betAmt = 0;
 
 // let userName = JSON.parse(localStorage.getItem('userName')) || {name: }
 let dealerWins = JSON.parse(localStorage.getItem('dealerWins')) || { wins: 0 };
@@ -149,7 +157,7 @@ $('document').ready( () => {
     $('.def-img').empty();
     $('.dealer-card-container').append($('<img>',{src:'img/back1.jpg', class:'card-img', id:'placeholder'}));
 
-    var drawFour = heroProx+myID+'/draw/?count=4';
+    var drawFour = heroProx+deckID+'/draw/?count=4';
     var drawXHR = $.getJSON(drawFour);
     drawXHR.done( (drawFourData) => {
 
@@ -179,13 +187,14 @@ $('document').ready( () => {
 
 
   // var draw = function () {
-  //   var drawOne = heroProx+myID+'/draw/?count=1';
+  //   var drawOne = heroProx+deckID+'/draw/?count=1';
   //   var drawXHR = $.getJSON(drawOne);
   //   drawXHR.done(function (drawOneData) {
   //     card = drawOneData.cards[0].value;
   //   })
   //   return card;
   // }
+
   const getRand = () => {
     return Math.floor(Math.random() * 5 + 1);
   }
@@ -205,7 +214,7 @@ $('document').ready( () => {
 
   var hit = (event) => {
     hitAud();
-    var drawOne = heroProx+myID+'/draw/?count=1';
+    var drawOne = heroProx+deckID+'/draw/?count=1';
     var drawXHR = $.getJSON(drawOne);
     drawXHR.done(function (drawOneData) {
       card = drawOneData.cards[0].value;
@@ -218,7 +227,7 @@ $('document').ready( () => {
 
   var dealerHit = (event) => {
 
-    var drawOne = heroProx+myID+'/draw/?count=1';
+    var drawOne = heroProx+deckID+'/draw/?count=1';
     var drawXHR = $.getJSON(drawOne);
     drawXHR.done( (drawOneData) => {
       card = drawOneData.cards[0].value;
